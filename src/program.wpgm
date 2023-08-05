@@ -1,5 +1,5 @@
 import juego.*
-program juego {
+program principal {
 
 	juego.iniciar()
 } 

@@ -1,12 +1,14 @@
 import wollok.game.*
+import arco.*
+import visuales.*
+
 
 object juego{
-	var enJuego = true
 	method iniciar(){
 		self.visuales()
-		game.start()	
 		self.colisiones()
-		self.control()
+		pelota.control()
+		game.start()	
 	}
 	
 	method visuales(){
@@ -16,16 +18,11 @@ object juego{
 		game.boardGround("assets/fondo.png")
 		game.cellSize(60)
 		game.addVisual(arquero)
-		game.addVisualCharacter(pelota)
+		game.addVisual(pelota)
 		game.addVisual(izquierda)
+		game.addVisual(medio)
+		game.addVisual(derecha)
 		game.addVisual(contadorDeGoles)
-	}
-	
-	method control(){
-	 if (enJuego){
-		keyboard.num(1).onPressDo{pelota.moverIzquierda()}
-	 }
-	   
 	}
 	
 	
@@ -34,85 +31,22 @@ object juego{
 		game.onCollideDo(pelota, { elemento => pelota.colisionaCon(elemento) })
 	}
 	
-	method finDeJuego(){
-		enJuego = false
-	}
-	
-}
 
-object contadorDeGoles{
-	var cantidad = 0
-	
-	method position() = game.at(1,0)
-	 
-	method text() = "GOLES: " + cantidad.toString()
-	
-	method sumarGol(){
-		cantidad += 1
-	}
-}
-
-object pelota{
-	var property position = game.at(3,1)
-	
-	method image() = "assets/pelota.png"
-	
-	method colisionaCon(otroElemento){
-		otroElemento.colision()
-	}
-	
-	method moverIzquierda(){
-		position = game.at(4,11)
-	}
 	
 	method reiniciar(){
-		position = game.at(7,2)
-	}
-}
-
-object arquero{
-	var property position = game.at(7,9)
-	
-	method image() = "assets/arquero.png"
-	
-	method colision(){
-		game.addVisual(finDeJuego)
+		arquero.reiniciar()
 		pelota.reiniciar()
+		game.schedule(50,{game.removeVisual(gol)})
+	}
+	
+	method resetear(){
+	 if (!pelota.puedePatear()){
+		game.removeVisual(finDeJuego)
+		contadorDeGoles.reiniciar()
+		arquero.reiniciar()
+		pelota.reiniciar()
+	 }
+	}
 		
-	}
 }
 
-object finDeJuego{
- 	method position() = game.at(7,7)
- 	method text() = "GAME OVER"
-}
-
-object izquierda{
-	method position() = game.at(4,11)
-	method image() = "assets/arco.png"
-	
-	method colision(){
-		contadorDeGoles.sumarGol()
-		game.schedule(250,{=> pelota.reiniciar()})
-	}
-}
-
-object medio{
-	method position() = game.at(7,9)
-	method image() = "assets/arco.png"
-	
-	method colision(){
-		contadorDeGoles.sumarGol()
-		game.schedule(250,{=> pelota.reiniciar()})
-	}
-}
-
-object derecha{
-	method position() = game.at(7,9)
-	method image() = "assets/arco.png"
-	
-	method colision(){
-		contadorDeGoles.sumarGol()
-		game.schedule(250,{=> pelota.reiniciar()})
-	}
-}
