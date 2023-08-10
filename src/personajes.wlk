@@ -1,6 +1,6 @@
 import wollok.game.*
 import juego.*
-
+import arco.*
 
 object pelota{
 	var property puedePatear = true
@@ -9,9 +9,9 @@ object pelota{
 	method image() = "assets/pelota.png"
 	
 	method control(){	
-		keyboard.num(1).onPressDo{self.izquierda()}
-		keyboard.num(2).onPressDo{self.medio()}
-		keyboard.num(3).onPressDo{self.derecha()}
+		keyboard.num(1).onPressDo{self.patearIzquierda()}
+		keyboard.num(2).onPressDo{self.patearMedio()}
+		keyboard.num(3).onPressDo{self.patearDerecha()}
 	}
 	
 	method colisionaCon(otroElemento){
@@ -19,7 +19,7 @@ object pelota{
 		otroElemento.colision()
 	}
 	
-	method izquierda(){
+	method patearIzquierda(){
 		if (puedePatear){
 		puedePatear = false
 		arquero.mover()
@@ -29,7 +29,7 @@ object pelota{
 	}
 	
 	
-	method medio(){
+	method patearMedio(){
 	  if (puedePatear){
 		puedePatear = false
 		arquero.mover()
@@ -38,7 +38,7 @@ object pelota{
 		}
 	}
 	
-	method derecha(){
+	method patearDerecha(){
 		if (puedePatear) {
 		puedePatear = false
 		arquero.mover()
@@ -78,33 +78,6 @@ object arquero{
 
 }
 
-object gol{
-	method position() = game.at(3,4)
-	method text() = "GOOOOOL"
-	method textColor() = "#ca1e11e8"
-}
-
-object contadorDeGoles{
-	var cantidad = 0
-	
-	method position() = game.at(3,6)
-	 
-	method text() = "GOLES: " + cantidad.toString()
-		
-	method sumarGol(){
-		cantidad += 1
-	}
-	
-	method reiniciar(){
-		cantidad = 0
-	}
-}
-
-object finDeJuego{
- 	method position() = game.at(3,4)
- 	method text() = "GAME OVER"
- 	method textColor() = "#ca1e11e8"
-}
 
 
 

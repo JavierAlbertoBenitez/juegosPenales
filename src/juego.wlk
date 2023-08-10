@@ -1,6 +1,6 @@
 import wollok.game.*
 import arco.*
-import visuales.*
+import personajes.*
 
 
 object juego{

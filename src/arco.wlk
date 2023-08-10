@@ -1,5 +1,5 @@
 import wollok.game.*
-import visuales.*
+import personajes.*
 import juego.*
 
 object izquierda{
@@ -33,4 +33,32 @@ object derecha{
 		game.addVisual(gol)
 		game.schedule(250,{=> juego.reiniciar()})
 	}
+}
+
+object gol{
+	method position() = game.at(3,4)
+	method text() = "GOOOOOL"
+	method textColor() = "#ca1e11e8"
+}
+
+object contadorDeGoles{
+	var cantidad = 0
+	
+	method position() = game.at(3,6)
+	 
+	method text() = "GOLES: " + cantidad.toString()
+		
+	method sumarGol(){
+		cantidad += 1
+	}
+	
+	method reiniciar(){
+		cantidad = 0
+	}
+}
+
+object finDeJuego{
+ 	method position() = game.at(3,4)
+ 	method text() = "GAME OVER"
+ 	method textColor() = "#ca1e11e8"
 }
